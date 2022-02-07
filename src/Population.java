@@ -144,23 +144,12 @@ public class Population {
         }
     }
 
-    //funcao para comparar qual o melhor individuo
-
     /**
      * This function compares each individual to each other to discover which ones are the best
      */
     public void compare() {
         int count = 0;
         ArrayList<Individual> bestIndividuals = new ArrayList<>();
-
-        for (Individual ind : individuals) {
-            for (int i=0 ; i<10 ; i++) {
-                Random r = new Random();
-                if (ind.getEval() > individuals.get(r.nextInt(individuals.size())).getEval()) {
-                    ind.setP(ind.getP()-1);
-                }
-            }
-        }
 
         Collections.sort(individuals);
 

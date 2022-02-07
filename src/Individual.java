@@ -8,7 +8,6 @@ import java.util.Collections;
 public class Individual implements Comparable<Individual>{
 
     // Private variables for each individual
-    private int p;
     private int cuts;
     private int finalEval;
     private double eval;
@@ -34,7 +33,6 @@ public class Individual implements Comparable<Individual>{
 
         this.params = params;
 
-        this.p = 10;
         this.cuts = 0;
         this.eval = 0;
         this.finalEval = 0;
@@ -169,22 +167,6 @@ public class Individual implements Comparable<Individual>{
      */
     public ArrayList<Integer> getListOfIndex() {
         return indexList;
-    }
-
-    /**
-     * get p
-     * @return p
-     */
-    public int getP() {
-        return p;
-    }
-
-    /**
-     * set p
-     * @param p - sets p
-     */
-    public void setP(int p) {
-        this.p = p;
     }
 
     /**
