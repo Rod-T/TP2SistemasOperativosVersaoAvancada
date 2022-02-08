@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.concurrent.Semaphore;
 
 /** @author - Rodrigo Tavares
  * @docente - Aníbal Ponte
@@ -8,13 +7,13 @@ import java.util.concurrent.Semaphore;
 public class Main {
 
     public static void main(String[] args) {
-        String file = args[0];
+        /*String file = args[0];
         int threads = Integer.parseInt(args[1]);
-        int maxTime = Integer.parseInt(args[2]);
+        int maxTime = Integer.parseInt(args[2]);*/
 
-       /* String file = "prob03.txt";
-        int threads = 4;
-        int maxTime = 2000;*/
+        String file = "prob08_3.txt";
+        int threads = 20;
+        int maxTime = 2000;
 
         AllPopulation bestPopulation = new AllPopulation(threads);
 
@@ -26,7 +25,6 @@ public class Main {
         System.out.println("Problem = " + file + " Number threads = " + threads + " Time = " + 10);
         System.out.println(params);
 
-
         try {
             for (int i = 0; i < 10; i++) {
                 data.initialize();
@@ -35,8 +33,6 @@ public class Main {
                 MyThread.bestPopulation = bestPopulation;
 
                 ArrayList<MyThread> myThreads = new ArrayList<>();
-
-                //Semaphore sem = new Semaphore(threads);
 
                 for (int j = 0; j < threads; j++) {
                     myThreads.add(new MyThread(params));
@@ -49,15 +45,8 @@ public class Main {
                     myThreads.get(j).interrupt();
                 }
 
-                /*for (int j = 0; j < threads; j++) {
-                    myThreads.get(j).writePopulation();
-                }*/
-
-                System.out.println("beforeGet");
-
                 bestPopulation.getBest75();
-
-                System.out.println("afterGet");
+                bestPopulation.allPopulation.clear();
 
                 for (int j = 0; j < threads; j++) {
                     myThreads.get(j).getBestPopulation();

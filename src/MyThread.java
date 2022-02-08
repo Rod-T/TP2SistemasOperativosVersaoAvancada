@@ -42,6 +42,7 @@ public class MyThread extends Thread {
         population = new Population(params);
 
         while (flag == 0 || flag == 1) {
+
             while(!isInterrupted()){
                 count++;
                 resTime = System.currentTimeMillis();
@@ -56,29 +57,44 @@ public class MyThread extends Thread {
                 finalResTime = time - resTime;
 
                 for (Individual individual : population.getList()) {
+
                     if (ind.getFinalEval() > individual.getFinalEval()) {
                         ind = individual;
                     }
+
                 }
+
             }
             writePopulation();
             if(flag == 2)
                 break;
 
             while(flag == 0);
+
         }
+
         data.writeData(ind, finalResTime, count);
     }
 
+    /**
+     * Method to save the best population for each thread
+     */
     public void writePopulation(){
         bestPopulation.saveIndividuals(population.getList());
     }
 
+    /**
+     * Method to get the best population for each thread
+     */
     public void getBestPopulation(){
         population.getList().clear();
         population.getList().addAll(bestPopulation.getBest());
     }
 
+    /**
+     * Auxiliary method to set the flag to 1 to exit the while loop
+     * @param flag - the flag
+     */
     public void setFlag(int flag){
         this.flag = flag;
     }

@@ -6,32 +6,45 @@ public class AllPopulation {
     ArrayList<Individual> allPopulation;
     ArrayList<Individual> bestIndividuals;
     int numberThreadsUpdated;
-    int threads;
+    int nbOfThreads;
     int MAX_SIZE = 75;
 
-
-    public AllPopulation(int threads){
+    /**
+     * Builder for AllPopulation
+     * @param nbOfThreads - the number of threads that are currently working
+     */
+    public AllPopulation(int nbOfThreads){
         this.allPopulation = new ArrayList<>();
         bestIndividuals = new ArrayList<>();
         this.numberThreadsUpdated = 0;
-        this.threads = threads;
+        this.nbOfThreads = nbOfThreads;
     }
 
+    /**
+     * Saves the Individuals of each thread to the whole Population
+     * @param inds - the array of individuals from each thread
+     */
     public synchronized void saveIndividuals(ArrayList<Individual> inds){
         this.allPopulation.addAll(inds);
         this.numberThreadsUpdated++;
-        if(numberThreadsUpdated == threads) {
+
+        if(numberThreadsUpdated == nbOfThreads) {
             notify();
-            System.out.println("notify()");
         }
     }
 
+    /**
+     * Initializes the arraylists and numberOfThreads updated for each test cycle
+     */
     public void initialize(){
         this.numberThreadsUpdated = 0;
         this.allPopulation.clear();
         this.bestIndividuals.clear();
     }
 
+    /**
+     * Sorts the whole population and writes the best 75 to the arraylist bestIndividuals
+     */
     public synchronized void getBest75(){
         try {
             wait();
@@ -46,6 +59,10 @@ public class AllPopulation {
         }
     }
 
+    /**
+     * Returns the bestIndividuals arraylist
+     * @return - the best individuals
+     */
     public ArrayList<Individual> getBest(){
         return bestIndividuals;
     }
