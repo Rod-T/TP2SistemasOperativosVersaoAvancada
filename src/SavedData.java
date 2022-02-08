@@ -33,6 +33,13 @@ public class SavedData {
         }
     }
 
+    public void initialize(){
+        bestIteration = 0;
+        bestTime = 0;
+        bestIndividual = new Individual(params);
+        bestIndividual.setFinalEval(Integer.MAX_VALUE);
+    }
+
     /**
      * get the saved data
      * @return savedData

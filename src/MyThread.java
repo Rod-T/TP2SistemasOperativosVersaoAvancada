@@ -6,9 +6,13 @@ public class MyThread extends Thread {
 
     static Parameters params;
     static SavedData data;
+    static AllPopulation bestPopulation;
+    Population population;
 
     static long time;
     static long maxTime;
+
+    volatile int flag = 0;
 
     static int maxIterations = 20000;
 
@@ -32,32 +36,51 @@ public class MyThread extends Thread {
         long initialTime = System.currentTimeMillis();
         long finalTime;
         long resTime;
-        long finalResTime;
+        long finalResTime = 0;
         long time;
 
-        Population population = new Population(params);
+        population = new Population(params);
 
-        do{
+        while (flag == 0 || flag == 1) {
+            while(!isInterrupted()){
+                count++;
+                resTime = System.currentTimeMillis();
 
-            count ++;
-            resTime = System.currentTimeMillis();
+                population.generateChilds();
+                population.compare();
 
-            population.generateChilds();
-            population.compare();
+                finalTime = System.currentTimeMillis();
+                time = finalTime;
 
-            finalTime = System.currentTimeMillis();
-            time = finalTime;
+                MyThread.time = finalTime - initialTime;
+                finalResTime = time - resTime;
 
-            MyThread.time = finalTime - initialTime;
-            finalResTime = time - resTime;
-
-            for (Individual individual : population.getList()) {
-                if (ind.getFinalEval() > individual.getFinalEval()) {
-                    ind = individual;
+                for (Individual individual : population.getList()) {
+                    if (ind.getFinalEval() > individual.getFinalEval()) {
+                        ind = individual;
+                    }
                 }
             }
+            writePopulation();
+            if(flag == 2)
+                break;
 
-            data.writeData(ind,finalResTime,count);
-        } while (MyThread.time < maxTime && count < maxIterations);
+            while(flag == 0);
+        }
+        data.writeData(ind, finalResTime, count);
     }
+
+    public void writePopulation(){
+        bestPopulation.saveIndividuals(population.getList());
+    }
+
+    public void getBestPopulation(){
+        population.getList().clear();
+        population.getList().addAll(bestPopulation.getBest());
+    }
+
+    public void setFlag(int flag){
+        this.flag = flag;
+    }
+
 }

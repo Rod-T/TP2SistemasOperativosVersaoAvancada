@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ProjetoSOTP2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ProjetoSOTP2_jar</output-path>
+    <root id="archive" name="ProjetoSOTP2.jar">
+      <element id="module-output" name="ProjetoSOTP2" />
+    </root>
+  </artifact>
+</component>
