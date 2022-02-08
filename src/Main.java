@@ -14,7 +14,7 @@ public class Main {
         double timeToSleep = (double)percentage / 100;
         int percIterations = 100 / percentage;*/
 
-        String file = "prob08_3.txt";
+        String file = "prob03.txt";
         int threads = 4;
         int maxTime = 2000;
         int percentage = 50;
@@ -45,37 +45,7 @@ public class Main {
                     myThreads.get(j).start();
                 }
 
-                for (int k = 0 ; k < percentageIterations ; k++ ){
-                    for (int j = 0; j < threads; j++) {
-                        myThreads.get(j).setFlag(0);
-                    }
-                    Thread.sleep((long)(maxTime*percentageTimeToSleep));
-
-                    for (int j = 0; j < threads; j++) {
-                        myThreads.get(j).interrupt();
-                    }
-
-                    bestPopulation.getBest75();
-                    bestPopulation.allPopulation.clear();
-
-                    for (int j = 0; j < threads; j++) {
-                        myThreads.get(j).getBestPopulation();
-                    }
-
-                    for (int j = 0; j < threads; j++) {
-                        myThreads.get(j).setFlag(1);
-                    }
-
-                    if(k == percentageIterations - 1){
-                        Thread.sleep((long)(maxTime*percentageTimeToSleep));
-                        for (int j = 0; j < threads; j++) {
-                            myThreads.get(j).setFlag(2);
-                        }
-                    }
-                }
-
-
-                /*Thread.sleep((long)(maxTime*percentageTimeToSleep));
+                Thread.sleep((long)(maxTime*percentageTimeToSleep));
 
                 for (int j = 0; j < threads; j++) {
                     myThreads.get(j).interrupt();
@@ -90,13 +60,13 @@ public class Main {
 
                 for (int j = 0; j < threads; j++) {
                     myThreads.get(j).setFlag(1);
-                }*/
+                }
 
                 //Thread.sleep((long)(maxTime*percentageTimeToSleep));
 
-                /*for (int j = 0; j < threads; j++) {
+                for (int j = 0; j < threads; j++) {
                     myThreads.get(j).setFlag(2);
-                }*/
+                }
 
                 for (int j = 0; j < threads; j++) {
                     myThreads.get(j).join();
@@ -105,7 +75,7 @@ public class Main {
                 SavedData newData = data.get();
                 System.out.println("------------------------------------- Test " + (i + 1) + " -----------------------------------");
                 System.out.println(newData.bestIndividual.getPlateList());
-                System.out.println("Eval = " + newData.bestIndividual.getFinalEval() + " Best Iteration = " + newData.bestIteration + " Best Time = " + newData.bestTime);
+                System.out.println("Eval = " + newData.bestIndividual.getFinalEval() + " Best Iteration = " + newData.bestIteration + " Best Time = " + (newData.bestTime/1000.0));
             }
         }catch (InterruptedException e){
             e.printStackTrace();

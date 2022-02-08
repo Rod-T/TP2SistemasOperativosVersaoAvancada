@@ -9,7 +9,7 @@ public class MyThread extends Thread {
     static AllPopulation bestPopulation;
     Population population;
 
-    static long time;
+    long time;
     static long maxTime;
 
     volatile int flag = 0;
@@ -31,35 +31,42 @@ public class MyThread extends Thread {
     public void run() {
         Individual ind = new Individual(params);
         ind.setFinalEval(Integer.MAX_VALUE);
-        int count = 0;
+        int iterations = 0;
+        int bestIteration = 0;
 
         long initialTime = System.currentTimeMillis();
         long finalTime;
-        long resTime;
-        long finalResTime = 0;
-        long time;
+        long bestTime = 0;
+
 
         population = new Population(params);
+        for (Individual individual : population.getList()) {
+            if (ind.getFinalEval() > individual.getFinalEval()) {
+                ind.updateInd(individual);
+                bestTime = this.time;
+                bestIteration = iterations;
+            }
+        }
 
         while (flag == 0 || flag == 1) {
 
             while(!isInterrupted()){
-                count++;
-                resTime = System.currentTimeMillis();
+                iterations++;
 
                 population.generateChilds();
                 population.compare();
 
                 finalTime = System.currentTimeMillis();
-                time = finalTime;
+                this.time = finalTime - initialTime;
 
-                MyThread.time = finalTime - initialTime;
-                finalResTime = time - resTime;
+
 
                 for (Individual individual : population.getList()) {
 
                     if (ind.getFinalEval() > individual.getFinalEval()) {
                         ind = individual;
+                        bestTime = this.time;
+                        bestIteration = iterations;
                     }
 
                 }
@@ -73,7 +80,7 @@ public class MyThread extends Thread {
 
         }
 
-        data.writeData(ind, finalResTime, count);
+        data.writeData(ind, bestTime, bestIteration);
     }
 
     /**
