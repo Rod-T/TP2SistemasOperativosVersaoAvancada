@@ -14,8 +14,8 @@ public class Main {
         double timeToSleep = (double)percentage / 100;
         int percIterations = 100 / percentage;*/
 
-        String file = "prob03.txt";
-        int threads = 4;
+        String file = "prob08_3.txt";
+        int threads = 10;
         int maxTime = 2000;
         int percentage = 50;
         double percentageTimeToSleep = (double)percentage / 100;
@@ -28,7 +28,8 @@ public class Main {
 
         SavedData data = new SavedData(params);
 
-        System.out.println("Problem = " + file + " Number threads = " + threads + " Time = " + 10);
+        System.out.println("------------------------------- ADVANCED VERSION --------------------------------");
+        System.out.println("Problem = " + file + " Number threads = " + threads + " Time = " + maxTime + "ms" + " Percentage of time = " + percentage + "%");
         System.out.println(params);
 
         try {
