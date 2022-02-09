@@ -20,7 +20,7 @@ Com esta informação conseguimos saber que se pretende gerar padrões de organi
 
 O algoritmo AJR-E++ pertence à classe dos algoritmos evolutivos, sendo uma versão de um dos seus tipos - a Programação Evolutiva (https://en.wikipedia.org/wiki/Evolutionary_programming). Ao contrário dos algoritmos que trabalham apenas com uma solução, na programação evolutiva trabalha-se sempre com conjuntos de soluções (denominadas populações).
 
-VERSAO BASE:
+VERSAO AVANCADA:
 
     A versão avançada é semelhante à versão base com as seguintes alterações:
 1. De acordo com um parâmetro de entrada que representa uma percentagem do tempo total,
