@@ -32,10 +32,10 @@ VERSAO BASE:
     A versão avançada é semelhante à versão base com as seguintes alterações:
 1. De acordo com um parâmetro de entrada que representa uma percentagem do tempo total,
 em cada múltiplo dessa percentagem de tempo procede-se à seguinte operação:
-a) Junta-se as populações de todas as threads numa única população.
-b) Seja a variável μ o tamanho de cada população em cada thread. Ordena-se a população
+- a) Junta-se as populações de todas as threads numa única população.
+- b) Seja a variável μ o tamanho de cada população em cada thread. Ordena-se a população
 obtida no ponto 1.a) e escolhe-se uma nova população com as μ melhores soluções, de
 acordo com a avaliação.
-c) Atualiza-se todas as threads com a nova população obtida no ponto 1.b)
+- c) Atualiza-se todas as threads com a nova população obtida no ponto 1.b)
 2. A operação anterior não deve ser efetuada no final do tempo de execução do algoritmo
 (último múltiplo da percentagem de tempo total).
