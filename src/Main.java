@@ -29,7 +29,7 @@ public class Main {
 
         SavedData data = new SavedData(params);
 
-        System.out.println("Problem = " + file + " Number threads = " + threads + " Time = " + maxTime/1000);
+        System.out.println("Problem = " + file + " Number threads = " + threads + " Time = " + maxTime/1000 + " Percentage = " + percentage);
         System.out.println(params);
 
         Semaphore threadContinueSem;
