@@ -5,19 +5,14 @@ public class AllPopulation {
 
     ArrayList<Individual> allPopulation;
     ArrayList<Individual> bestIndividuals;
-    int numberThreadsUpdated;
-    int nbOfThreads;
     int MAX_SIZE = 75;
 
     /**
      * Builder for AllPopulation
-     * @param nbOfThreads - the number of threads that are currently working
      */
-    public AllPopulation(int nbOfThreads){
+    public AllPopulation(){
         this.allPopulation = new ArrayList<>();
         bestIndividuals = new ArrayList<>();
-        this.numberThreadsUpdated = 0;
-        this.nbOfThreads = nbOfThreads;
     }
 
     /**
@@ -26,18 +21,12 @@ public class AllPopulation {
      */
     public synchronized void saveIndividuals(ArrayList<Individual> inds){
         this.allPopulation.addAll(inds);
-        this.numberThreadsUpdated++;
-
-        if(numberThreadsUpdated == nbOfThreads) {
-            notify();
-        }
     }
 
     /**
      * Initializes the arraylists and numberOfThreads updated for each test cycle
      */
     public void initialize(){
-        this.numberThreadsUpdated = 0;
         this.allPopulation.clear();
         this.bestIndividuals.clear();
     }
@@ -46,15 +35,10 @@ public class AllPopulation {
      * Sorts the whole population and writes the best 75 to the arraylist bestIndividuals
      */
     public synchronized void getBest75(){
-        try {
-            wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         Collections.sort(allPopulation);
 
-        for(int i = 0 ; i < MAX_SIZE ; i++ ){
+        for (int i = 0; i < MAX_SIZE; i++) {
             this.bestIndividuals.add(allPopulation.get(i));
         }
     }

@@ -1,3 +1,5 @@
+import java.util.concurrent.Semaphore;
+
 /** @author - Rodrigo Tavares
  * @docente - Aníbal Ponte
  * */
@@ -9,12 +11,18 @@ public class MyThread extends Thread {
     static AllPopulation bestPopulation;
     Population population;
 
-    static long time;
+    //long time;
     static long maxTime;
 
-    volatile int flag = 0;
+    //static int maxIterations = 20000;
 
-    static int maxIterations = 20000;
+    static Semaphore threadContinueSem;
+    static Semaphore threadGatherSem;
+
+    static volatile boolean running;
+    static volatile boolean merging;
+
+
 
     /**
      * Builder for MyThread
@@ -31,49 +39,50 @@ public class MyThread extends Thread {
     public void run() {
         Individual ind = new Individual(params);
         ind.setFinalEval(Integer.MAX_VALUE);
-        int count = 0;
+        int iterations = 0;
+        int bestIteration = 0;
 
         long initialTime = System.currentTimeMillis();
         long finalTime;
-        long resTime;
-        long finalResTime = 0;
-        long time;
+        long bestTime = 0;
+
 
         population = new Population(params);
+        finalTime = System.currentTimeMillis() - initialTime;
 
-        while (flag == 0 || flag == 1) {
-
-            while(!isInterrupted()){
-                count++;
-                resTime = System.currentTimeMillis();
-
-                population.generateChilds();
-                population.compare();
-
-                finalTime = System.currentTimeMillis();
-                time = finalTime;
-
-                MyThread.time = finalTime - initialTime;
-                finalResTime = time - resTime;
-
-                for (Individual individual : population.getList()) {
-
-                    if (ind.getFinalEval() > individual.getFinalEval()) {
-                        ind = individual;
-                    }
-
-                }
-
+        for (Individual individual : population.getList()) {
+            if (ind.getFinalEval() > individual.getFinalEval()) {
+                ind.updateInd(individual);
+                bestTime = finalTime;
+                bestIteration = iterations;
             }
-            writePopulation();
-            if(flag == 2)
-                break;
-
-            while(flag == 0);
-
         }
 
-        data.writeData(ind, finalResTime, count);
+        while (running) {
+            iterations++;
+            if(merging) {
+                writePopulation();
+                try {
+                    threadContinueSem.acquire();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            population.generateChilds();
+            population.compare();
+
+            finalTime = System.currentTimeMillis() - initialTime;
+
+            for (Individual individual : population.getList()) {
+                if (ind.getFinalEval() > individual.getFinalEval()) {
+                    ind.updateInd(individual);
+                    bestTime = finalTime;
+                    bestIteration = iterations;
+                }
+            }
+        }
+        data.writeData(ind, bestTime, bestIteration);
     }
 
     /**
@@ -81,6 +90,7 @@ public class MyThread extends Thread {
      */
     public void writePopulation(){
         bestPopulation.saveIndividuals(population.getList());
+        this.threadGatherSem.release();
     }
 
     /**
@@ -91,12 +101,5 @@ public class MyThread extends Thread {
         population.getList().addAll(bestPopulation.getBest());
     }
 
-    /**
-     * Auxiliary method to set the flag to 1 to exit the while loop
-     * @param flag - the flag
-     */
-    public void setFlag(int flag){
-        this.flag = flag;
-    }
 
 }

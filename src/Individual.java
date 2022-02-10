@@ -222,4 +222,23 @@ public class Individual implements Comparable<Individual>{
     public int compareTo(Individual o) {
         return (int) (this.getEval()*1000000000 - o.getEval()*1000000000);
     }
+
+    public void updateInd(Individual ind){
+        this.indexList.clear();
+        this.indexList.addAll(ind.indexList);
+
+        this.plateList.clear();
+        this.plateList.addAll(ind.plateList);
+
+        this.wasteList.clear();
+        this.wasteList.addAll(ind.wasteList);
+
+        this.cutsList.clear();
+        this.cutsList.addAll(ind.cutsList);
+
+        this.cuts = ind.cuts;
+        this.eval = ind.eval;
+        this.finalEval = ind.finalEval;
+    }
+
 }

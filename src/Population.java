@@ -7,7 +7,7 @@ import java.util.Random;
  * */
 
 public class Population {
-    private final ArrayList<Individual> individuals;
+    private  ArrayList<Individual> individuals;
     private final int maxPopulation = 75;
 
     /**
